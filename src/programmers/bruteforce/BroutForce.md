@@ -23,10 +23,25 @@ i % 배열.length
 ```java
 // 반복문으로 한번에 처리 가능
 int[][] patterns = {
-    {1, 2, 3, 4, 5},
-    {2, 1, 2, 3, 2, 4, 2, 5},
-    {3, 3, 1, 1, 2, 2, 4, 4, 5, 5}
-};
+                {1, 2, 3, 4, 5},
+                {2, 1, 2, 3, 2, 4, 2, 5},
+                {3, 3, 1, 1, 2, 2, 4, 4, 5, 5}
+        };
+
+// 인덱스 접근
+arr[i][0]        // i번째 행의 첫 번째 값
+arr.length       // 행 개수
+arr[i].length    // 열 개수 (i번째 행의 길이)
+```
+
+### 모든 조합 순회 패턴 (중복 없는 두 수 뽑기)
+```java
+for (int i = 0; i < arr.length; i++) {
+    for (int j = i + 1; j < arr.length; j++) {
+        // i, j 항상 다른 인덱스
+        // j = i + 1 이 핵심 → 중복 조합 없음
+    }
+}
 ```
 
 ### 최댓값 / 최솟값 구하기
@@ -42,6 +57,44 @@ int min = Integer.MAX_VALUE;
 for (int c : count) {
     min = Math.min(min, c);
 }
+
+// 2차원 배열에서 열별 최댓값
+int maxWidth = 0;
+int maxHeight = 0;
+for (int i = 0; i < arr.length; i++) {
+    maxWidth  = Math.max(maxWidth,  arr[i][0]);
+    maxHeight = Math.max(maxHeight, arr[i][1]);
+}
+```
+
+### 두 값 정렬 (swap)
+```java
+// 가로가 세로보다 작으면 swap → 방향 통일
+if (sizes[i][0] < sizes[i][1]) {
+    int temp = sizes[i][0];
+    sizes[i][0] = sizes[i][1];
+    sizes[i][1] = temp;
+}
+
+// 또는 Math.max/min으로 깔끔하게
+int width  = Math.max(sizes[i][0], sizes[i][1]);
+int height = Math.min(sizes[i][0], sizes[i][1]);
+```
+
+### 중복 제거 → Set
+```java
+Set<Integer> set = new HashSet<>();
+set.add(값);  // 중복 자동 제거
+```
+
+### Set → 정렬 → int[] 변환
+```java
+Set<Integer> set = new HashSet<>();
+
+List<Integer> list = new ArrayList<>(set);
+Collections.sort(list);  // 오름차순
+
+return list.stream().mapToInt(Integer::intValue).toArray();
 ```
 
 ### 가변 결과 → List → int[] 변환
@@ -49,7 +102,6 @@ for (int c : count) {
 List<Integer> list = new ArrayList<>();
 list.add(1);
 
-// List → int[] 변환
 return list.stream().mapToInt(Integer::intValue).toArray();
 ```
 
@@ -60,6 +112,8 @@ return list.stream().mapToInt(Integer::intValue).toArray();
 | 문제 | 플랫폼 | 난이도 | 핵심 포인트 |
 |------|--------|--------|------------|
 | 모의고사 | 프로그래머스 | Lv.1 | % 패턴 반복, 2차원 배열 |
+| 두 개 뽑아서 더하기 | 프로그래머스 | Lv.1 | 조합 순회 (j = i+1), HashSet 중복제거 |
+| 최소직사각형 | 프로그래머스 | Lv.1 | swap으로 방향 통일, 2차원 배열 열별 최댓값 |
 
 ---
 
@@ -67,3 +121,6 @@ return list.stream().mapToInt(Integer::intValue).toArray();
 - `import java.util.*;` 항상 상단에 선언
 - 최솟값 구할 때 초기값 `Integer.MAX_VALUE` 로 설정
 - 크기 모를 때 배열 대신 List 사용
+- 열 길이는 `arr.length` 아니라 `arr[i].length` 로 접근
+- 조합 순회할 때 `j = i + 1` 빠뜨리면 중복 조합 발생
+- 결과 정렬 필요하면 Set → List 변환 후 `Collections.sort()`
